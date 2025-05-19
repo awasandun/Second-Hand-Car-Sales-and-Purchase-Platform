@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Car - AutoMarket</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e40af;
+            --light-gray: #f3f4f6;
+            --dark-gray: #4b5563;
+            --warning-color: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: #333;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            border-color: #e2e8f0;
+            color: var(--dark-gray);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+            border-color: #cbd5e1;
+            color: #1f2937;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d97706;
+            border-color: #d97706;
+            color: white;
+        }
+
+        .form-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-icon {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            color: var(--dark-gray);
+            pointer-events: none;
+        }
+
+        .input-icon-container {
+            position: relative;
+        }
+
+        .input-icon-container .form-control {
+            padding-right: 2.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--dark-gray);
+            font-weight: 400;
+        }
+
+        .form-banner {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .edit-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background-color: var(--warning-color);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background-color: #1f2937;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-car-side me-2"></i>AutoMarket
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cars}"><i class="fas fa-search me-1"></i> Browse Cars</a>
+                </li>
+                <li class="nav-item" th:if="${session.userId != null}">
+                    <a class="nav-link" th:href="@{/cars/add}"><i class="fas fa-plus-circle me-1"></i> Sell a Car</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" th:if="${session.userId != null}">
+                    <a class="nav-link" th:href="@{/users/profile}"><i class="fas fa-user-circle me-1"></i> Profile</a>
+                </li>
+                <li class="nav-item" th:if="${session.userId != null}">
+                    <a class="nav-link" th:href="@{/users/logout}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="page-header">
+                <h2 class="page-title">Edit Car Listing</h2>
+                <p class="subtitle">Update the details of your car listing</p>
+            </div>
+
+            <div class="form-container">
+                <div class="edit-badge">
+                    <i class="fas fa-pen"></i>
+                </div>
+
+                <div class="form-banner">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fs-4 me-3 text-primary"></i>
+                        <div>
+                            <h5 class="mb-1">You're editing your car listing</h5>
+                            <p class="mb-0">Make your changes below and click 'Update Car' when you're done.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form th:action="@{/cars/edit/{id}(id=${car.id})}" th:object="${car}" method="post" id="editCarForm">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-info-circle me-2"></i>Basic Information</h3>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="make" class="form-label">Make</label>
+                                <div class="input-icon-container">
+                                    <input type="text" class="form-control" id="make" th:field="*{make}" required>
+                                    <i class="fas fa-car form-icon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="model" class="form-label">Model</label>
+                                <input type="text" class="form-control" id="model" th:field="*{model}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="year" class="form-label">Year</label>
+                                <div class="input-icon-container">
+                                    <input type="number" class="form-control" id="year" th:field="*{year}" min="1900" max="2099" required>
+                                    <i class="fas fa-calendar-alt form-icon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="price" class="form-label">Price ($)</label>
+                                <div class="input-icon-container">
+                                    <input type="number" class="form-control" id="price" th:field="*{price}" min="0" step="0.01" required>
+                                    <i class="fas fa-dollar-sign form-icon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="mileage" class="form-label">Mileage (km)</label>
+                                <div class="input-icon-container">
+                                    <input type="number" class="form-control" id="mileage" th:field="*{mileage}" min="0" required>
+                                    <i class="fas fa-tachometer-alt form-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-clipboard-list me-2"></i>Details</h3>
+                        <div class="mb-3">
+                            <label for="condition" class="form-label">Condition</label>
+                            <select class="form-select" id="condition" th:field="*{condition}" required>
+                                <option value="">Select condition</option>
+                                <option value="New">New</option>
+                                <option value="Excellent">Excellent</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Poor">Poor</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                            <div class="form-text"><i class="fas fa-lightbulb me-1"></i> Tip: A detailed description helps potential buyers make informed decisions.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title"><i class="fas fa-image me-2"></i>Images</h3>
+
+                        <div class="text-center mb-3" th:if="${car.imageUrl != null && !car.imageUrl.isEmpty()}">
+                            <p class="mb-2">Current Image:</p>
+                            <img th:src="${car.imageUrl}" alt="Current car image" class="preview-image">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imageUrl" class="form-label">Image URL</label>
+                            <div class="input-icon-container">
+                                <input type="url" class="form-control" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/car-image.jpg">
+                                <i class="fas fa-link form-icon"></i>
+                            </div>
+                            <div class="form-text"><i class="fas fa-info-circle me-1"></i> Enter a URL to an image of your car. If left empty, a placeholder will be used.</div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Update Car
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-car-side me-2"></i>AutoMarket</h5>
+                <p>Find the perfect second-hand car that fits your needs and budget.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="text-white text-decoration-none">Home</a></li>
+                    <li><a th:href="@{/cars}" class="text-white text-decoration-none">Browse Cars</a></li>
+                    <li><a th:href="@{/about}" class="text-white text-decoration-none">About Us</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope me-2"></i>contact@automarket.com</li>
+                    <li><i class="fas fa-phone me-2"></i>(123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="mt-3">
+        <p class="text-center mb-0">© 2025 AutoMarket. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+<script>
+    // Preview image from URL if available
+    const imageUrlInput = document.getElementById('imageUrl');
+    const currentImage = document.querySelector('.preview-image');
+
+    if (imageUrlInput && !currentImage) {
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'text-center mb-3 d-none';
+        previewContainer.innerHTML = `
+            <p class="mb-2">Image Preview:</p>
+            <img src="" alt="Car image preview" class="preview-image">
+        `;
+
+        imageUrlInput.parentElement.after(previewContainer);
+        const previewImage = previewContainer.querySelector('img');
+
+        imageUrlInput.addEventListener('input', function() {
+            if (this.value) {
+                previewImage.src = this.value;
+                previewContainer.classList.remove('d-none');
+
+                // Handle image load error
+                previewImage.onerror = function() {
+                    previewContainer.classList.add('d-none');
+                };
+
+                previewImage.onload = function() {
+                    previewContainer.classList.remove('d-none');
+                };
+            } else {
+                previewContainer.classList.add('d-none');
+            }
+        });
+
+        // Initialize on page load
+        if (imageUrlInput.value) {
+            previewImage.src = imageUrlInput.value;
+            previewContainer.classList.remove('d-none');
+        }
+    }
+</script>
+</body>
+</html>

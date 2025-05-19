@@ -1,0 +1,4 @@
+435fc9d8-3207-4409-bd8d-a008d7dfc701,admin,admin123,admin@example.com,1234567890,ADMIN
+c5665152-ccee-4733-8437-e700455f1930,Dulsha,dulsha1Aa,dulsharulzzz@gmail.com,0772267021,USER
+25a7a68f-9360-4d93-89f7-fddf33dcb5c9,githma,dulsha1Aa,dulsharulzzz@gmail.com,0772267021,USER
+83b3e9be-9856-4b92-b2ec-0f4f6e73f3b1,kasunragith,dulsha1Aa,dulsharulzzz@gmail.com,0772267022,USER
